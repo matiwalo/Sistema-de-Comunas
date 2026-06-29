@@ -1,0 +1,566 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Censo 2022 — Comunas CABA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#192767; --sky:#29ABE2; --blue:#1B6EC2;
+  --gray50:#F9FAFB; --gray100:#F3F4F6; --gray200:#E5E7EB; --gray300:#D1D5DB;
+  --gray500:#6B7280; --gray600:#4B5563; --gray700:#374151;
+  --ok:#0A8A5A; --warn:#C06A00; --bad:#C0392B;
+  --disp:'Barlow Condensed',system-ui,sans-serif;
+  --body:'Montserrat',system-ui,sans-serif;
+}
+/* ── KM0 HERO ───────────────────────────────────────────── */
+.km0-hero{background:linear-gradient(135deg,#192767 0%,#1A5FA8 55%,#29ABE2 100%);padding:20px 0 18px;position:relative;overflow:hidden}
+.km0-hero::after{content:'';position:absolute;bottom:-28px;right:-28px;width:160px;height:160px;border-radius:50%;background:rgba(41,171,226,.12);pointer-events:none}
+.km0-hero::before{content:'';position:absolute;top:-36px;left:58%;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none}
+.km0-inner{max-width:1180px;margin:0 auto;padding:0 16px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;position:relative}
+@media(min-width:700px){.km0-inner{padding:0 24px}}
+.km0-brand{display:flex;align-items:center;gap:14px}
+.ko-badge{background:#fff;border-radius:8px;padding:7px 13px;font-family:var(--disp);font-weight:900;font-size:18px;line-height:1;flex-shrink:0;letter-spacing:.01em}
+.ko-k{color:#29ABE2}.ko-o{color:#192767}
+.km0-titles{display:flex;flex-direction:column;gap:3px}
+.km0-title{font-family:var(--disp);font-weight:900;font-size:clamp(17px,3.5vw,24px);color:#fff;line-height:1;text-transform:uppercase;letter-spacing:.02em}
+.km0-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px}
+.km0-tag{font-size:10.5px;color:rgba(255,255,255,.45);text-align:right;line-height:1.6}
+/* ── TABS ───────────────────────────────────────────────── */
+.nav-tabs{display:flex;background:#fff;border-bottom:2px solid var(--gray200);position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab-btn{padding:11px 20px;font-size:12.5px;font-weight:600;border:none;background:transparent;color:var(--gray500);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-2px;transition:color .14s,border-color .14s;display:flex;align-items:center;gap:7px;font-family:var(--body);-webkit-tap-highlight-color:rgba(0,0,0,0);white-space:nowrap;flex-shrink:0}
+.tab-btn:hover{color:var(--navy)}
+.tab-btn.active{color:var(--navy);border-bottom-color:var(--sky)}
+.tab-live-dot{width:7px;height:7px;border-radius:50%;background:#0A8A5A;flex-shrink:0;animation:livepulse 2s ease-in-out infinite}
+@keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.82)}}
+.tab-content{display:none}.tab-content.active{display:block}
+/* ── DATOS EN VIVO ──────────────────────────────────────── */
+.vivo-hero{background:linear-gradient(135deg,#192767 0%,#1A5FA8 55%,#29ABE2 100%);border-radius:12px;padding:20px 22px 18px;margin-bottom:18px;color:#fff;position:relative;overflow:hidden}
+.vivo-hero::after{content:'';position:absolute;bottom:-18px;right:-18px;width:120px;height:120px;border-radius:50%;background:rgba(41,171,226,.15)}
+.vivo-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:3px 11px;font-size:10px;font-weight:600;font-family:var(--body);margin-bottom:9px;position:relative}
+.vivo-ht{font-family:var(--disp);font-weight:900;font-size:clamp(18px,4vw,26px);text-transform:uppercase;letter-spacing:.02em;margin-bottom:5px;line-height:1}
+.vivo-desc{font-size:12px;color:rgba(255,255,255,.7);line-height:1.6;max-width:560px}
+.vivo-api{display:inline-flex;align-items:center;gap:6px;margin-top:11px;background:var(--sky);color:#fff;font-size:10.5px;font-weight:700;font-family:var(--body);padding:5px 14px;border-radius:20px;position:relative}
+.vivo-kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin-bottom:18px}
+.vivo-kpi{background:#fff;border:1px solid var(--gray200);border-radius:10px;padding:13px 15px;position:relative;overflow:hidden}
+.vivo-kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--sky)}
+.vl{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray500);margin-bottom:6px}
+.vv{font-family:var(--disp);font-weight:900;font-size:26px;color:var(--gray300);line-height:1}
+.vs{font-size:10px;color:var(--gray500);margin-top:3px}
+.v-wip{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;color:var(--sky);background:#EBF6FC;padding:2px 8px;border-radius:10px;margin-top:5px;font-family:var(--body)}
+.prob-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:14px}
+@media(min-width:700px){.prob-grid{grid-template-columns:1fr 1fr}}
+.vivo-roadmap{background:#fff;border:1px solid var(--gray200);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.rm-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--gray100)}
+.rm-item:last-child{border-bottom:none}
+.rm-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.rm-dot.done{background:var(--ok)}.rm-dot.wip{background:var(--warn)}.rm-dot.todo{background:var(--gray300)}
+.rm-text{font-size:11.5px;color:var(--navy);flex:1}
+.rm-text.faded{color:var(--gray500)}
+.rm-status{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:10px;font-family:var(--body);text-transform:uppercase;letter-spacing:.04em}
+.rm-status.done{background:#E1F5EE;color:#0A5A3A}
+.rm-status.wip{background:#FEF3E2;color:#8A4A00}
+.rm-status.todo{background:var(--gray100);color:var(--gray500)}
+@media(max-width:600px){
+  .km0-hero{padding:16px 0 14px}
+  .km0-tag{display:none}
+  .tab-btn{padding:9px 13px;font-size:11.5px}
+  .vivo-kpi-grid{grid-template-columns:repeat(2,1fr)}
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{-webkit-text-size-adjust:100%}
+body{font-family:var(--body);background:#fff;color:var(--navy);font-size:14px;line-height:1.55}
+
+.tb{max-width:1180px;margin:0 auto;padding:24px 16px}
+@media(min-width:700px){.tb{padding:28px 24px}}
+
+.intro{margin-bottom:20px}
+.eyebrow{color:var(--blue);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.28em;margin-bottom:10px}
+.intro h1{font-family:var(--disp);font-weight:900;font-size:clamp(26px,6vw,42px);text-transform:uppercase;line-height:.98;color:var(--navy);margin-bottom:10px}
+.intro h1 .accent{color:var(--blue)}
+.intro p{color:var(--gray600);font-size:13.5px;line-height:1.6;max-width:760px;text-align:justify}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.chip{background:var(--gray100);color:var(--gray700);font-size:11px;padding:5px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+.chip .dot{width:5px;height:5px;border-radius:50%;background:var(--blue)}
+
+.commune-selector{display:flex;flex-wrap:wrap;gap:6px;margin:24px 0 18px}
+.cs-btn{padding:6px 14px;font-size:12px;font-weight:600;border:1.5px solid var(--gray300);border-radius:999px;background:#fff;cursor:pointer;color:var(--gray600);transition:all .12s;font-family:var(--body);letter-spacing:.02em}
+.cs-btn:hover{border-color:var(--navy);color:var(--navy)}
+.cs-btn.active{border-color:transparent}
+
+.panel{display:none}.panel.active{display:block}
+
+.commune-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;padding:16px 18px;background:var(--gray50);border:1px solid var(--gray200);border-radius:12px}
+.badge{width:56px;height:56px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:900;font-size:22px;flex-shrink:0;letter-spacing:-.02em}
+.commune-name{font-family:var(--disp);font-size:18px;font-weight:800;color:var(--navy);margin-bottom:6px;line-height:1.15;text-transform:uppercase;letter-spacing:.01em}
+.commune-desc{font-size:12.5px;color:var(--gray600);line-height:1.6}
+
+.sec{font-family:var(--disp);font-weight:800;font-size:16px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;margin-top:22px}
+.sec-extra{font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray500);margin-left:6px;font-family:var(--body)}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:18px}
+@media(min-width:700px){.kpi-grid{gap:12px}}
+.kpi3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.kpi{background:#fff;border:1px solid var(--gray200);border-radius:10px;padding:13px 15px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--sky)}
+.kpi.ok::before{background:var(--ok)}
+.kpi.warn::before{background:var(--warn)}
+.kpi.bad::before, .kpi.danger::before{background:var(--bad)}
+.kl{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray500);margin-bottom:6px;line-height:1.3}
+.kv{font-family:var(--disp);font-weight:900;font-size:clamp(20px,5vw,28px);color:var(--navy);line-height:1}
+.kv.danger{color:var(--bad)}.kv.warn{color:var(--warn)}.kv.ok{color:var(--ok)}.kv.info{color:var(--blue)}
+.ks{font-size:10.5px;color:var(--gray500);margin-top:4px;line-height:1.35}
+
+.chart-box{background:#fff;border:1px solid var(--gray200);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.ct{font-size:12px;font-weight:500;color:var(--gray500);margin-bottom:12px}
+.br{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.br-sub-group{border-left:3px solid #A7E8CE;padding-left:12px;margin-top:4px}
+.br-sub-group .br{margin-bottom:5px}
+.br-sub-group .br:last-child{margin-bottom:0}
+.br-sub-group .bl{width:118px;text-align:left;padding-left:2px}
+.bl{font-size:11px;color:var(--gray600);width:130px;text-align:right;flex-shrink:0;line-height:1.3}
+.bt{flex:1;background:var(--gray100);border-radius:3px;height:13px;overflow:hidden;position:relative}
+.bf{height:100%;border-radius:3px}
+.bv{font-size:11px;font-weight:700;color:var(--navy);width:52px;flex-shrink:0;text-align:left}
+.note{font-size:10px;color:var(--gray500);text-align:right;margin-top:6px}
+.sep{height:1px;background:var(--gray200);margin:10px 0}
+.legend-row{display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--gray600);margin-top:8px}
+.leg-dot{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle}
+
+.pyr-wrap{position:relative}
+.pyr-container{display:flex;gap:3px;align-items:flex-end;height:120px;overflow:hidden}
+.pyr-col{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:134px;cursor:crosshair}
+.pyr-bars{width:100%;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.pyr-bar-wrap{position:relative;width:100%}
+.pyr-caba{position:absolute;bottom:0;left:0;width:100%;border-radius:2px 2px 0 0}
+.pyr-main{position:absolute;bottom:0;left:1px;width:calc(100% - 2px);border-radius:2px 2px 0 0;opacity:.9}
+.pyr-lbl{font-size:8px;color:var(--gray500);text-align:center;margin-top:3px;white-space:nowrap;overflow:hidden;width:100%;height:12px}
+.pyr-tooltip{display:none;position:absolute;background:var(--navy);color:#fff;font-size:11px;padding:8px 11px;border-radius:7px;pointer-events:none;white-space:nowrap;z-index:100;line-height:1.55;box-shadow:0 3px 12px rgba(0,0,0,.2)}
+.pyr-tooltip.visible{display:block}
+
+.grid2{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:14px}
+@media(min-width:700px){.grid2{grid-template-columns:1fr 1fr}}
+.alert{background:#fff;border:1px solid var(--gray200);border-radius:10px;padding:13px 15px}
+.alert.d{border-left:3px solid var(--bad)}
+.alert.w{border-left:3px solid var(--warn)}
+.alert.i{border-left:3px solid var(--blue)}
+.alert.g{border-left:3px solid var(--ok)}
+.alert.p{border-left:3px solid #7F77DD}
+.at{font-family:var(--disp);font-size:14px;font-weight:800;color:var(--navy);margin-bottom:4px;text-transform:uppercase;letter-spacing:.02em;line-height:1.2}
+.ab{font-size:11.5px;color:var(--gray600);line-height:1.6}
+.alert-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:9.5px;font-weight:700;margin-bottom:6px;letter-spacing:.06em;text-transform:uppercase}
+.at-leg{background:#FEE7E2;color:#8B2A1B}
+.at-parl{background:#FAEEDA;color:#854F0B}
+
+.insight-box{background:var(--gray50);border:1px solid var(--gray200);border-radius:12px;padding:14px 16px;margin-bottom:14px;border-left:3px solid var(--ok)}
+.insight-box.red{border-left-color:var(--bad)}
+.ib-title{font-family:var(--disp);font-size:14px;font-weight:800;color:var(--navy);margin-bottom:4px;text-transform:uppercase;letter-spacing:.02em}
+.ib-text{font-size:11.5px;color:var(--gray600);line-height:1.6}
+
+.section-divider{border:none;border-top:1px solid var(--gray200);margin:26px 0 18px}
+
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ev-table{width:100%;border-collapse:collapse;font-size:12px;min-width:480px}
+.ev-table th{text-align:left;padding:8px 10px;font-weight:700;color:var(--gray500);border-bottom:2px solid var(--gray200);font-size:10px;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.ev-table td{padding:8px 10px;border-bottom:1px solid var(--gray100);color:var(--navy);vertical-align:top}
+.ev-table tr:last-child td{border-bottom:none}
+.ev-table tr:hover td{background:var(--gray50)}
+.type-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:9.5px;font-weight:700;letter-spacing:.04em;white-space:nowrap;text-transform:uppercase}
+.t-parque{background:#E1F5EE;color:#0F6E56}
+.t-plaza{background:#E6F1FB;color:#185FA5}
+.t-plazoleta{background:#EEEDFE;color:#534AB7}
+.t-paseo{background:#FAEEDA;color:#854F0B}
+.t-lineal{background:#EAF3DE;color:#3B6D11}
+.t-reserva{background:#FCEBEB;color:#993C1D}
+
+.src{font-size:10.5px;color:var(--gray500);margin-top:22px;border-top:1px solid var(--gray200);padding-top:12px;line-height:1.6}
+
+@media(max-width:600px){
+  .kpi3{grid-template-columns:1fr 1fr}
+  .bl{width:100px;font-size:10px}
+  .commune-header{padding:13px 14px;gap:11px}
+  .badge{width:48px;height:48px;font-size:18px}
+  .commune-name{font-size:15px}
+}
+</style>
+</head>
+<body>
+
+
+<div id="tab-censo" class="tab-content active">
+<div class="tb">
+  <section class="intro">
+    <div class="eyebrow">Tablero interactivo · 15 Comunas</div>
+    <h1>Las <span class="accent">Comunas</span> en detalle.</h1>
+    <p>Perfil demográfico, habitacional, de acceso a la salud y de espacios verdes de las 15 comunas de la Ciudad de Buenos Aires e identificación de principales problemáticas, con datos del Censo Nacional de Población, Hogares y Viviendas 2022 y Buenos Aires Data (GCBA).</p>
+  </section>
+  <div class="commune-selector" id="cs"></div>
+  <div id="panels"></div>
+</div>
+</div><!-- /tab-censo -->
+
+<script>
+const DATA = {
+ "1":{color:"#7F77DD",bg:"#EEEDFE",desc:"Retiro · San Nicolás · Puerto Madero · San Telmo · Montserrat · Constitución",pob:221001,viv:130145,pers_viv:1.7,hogares:106509,barrios:{"Constitución":43838,"Monserrat":41435,"Puerto Madero":10935,"Retiro":67177,"San Nicolás":36421,"San Telmo":21195},fem:115959,masc:105042,edad_mediana:36.0,pob014:34281,pob014_pct:15.5,pob65p:30988,pob65p_pct:14.0,propia_pct:41.3,escritura_pct:75.9,boleto_pct:4.0,otra_doc_pct:4.6,sin_doc_pct:15.5,alquila_pct:48.3,prestada_pct:4.4,obra_pct:69.4,plan_pct:2.7,sin_salud:61722,sin_salud_pct:27.9,nunca_escuela_pct:4.1,pob14:189045,pea_pct:70.5,tasa_empleo:64.9,desoc_pct:7.9,inact_pct:29.5,age_pct:[4.4,5.7,5.4,6.0,8.6,9.3,9.0,8.0,7.2,6.5,5.7,5.3,4.7,4.1,3.5,2.8,1.8,1.1,0.6,0.2,0.0],age_abs:[9776,12541,11964,13345,18903,20579,19998,17726,15950,14452,12636,11656,10487,8969,7749,6138,4046,2354,1291,390,51]},
+ "2":{color:"#185FA5",bg:"#E6F1FB",desc:"Recoleta",pob:160609,viv:107498,pers_viv:1.49,hogares:83818,barrios:{"Recoleta":160609},fem:90302,masc:70307,edad_mediana:38.6,pob014:17827,pob014_pct:11.1,pob65p:32564,pob65p_pct:20.3,propia_pct:46.8,escritura_pct:96.3,boleto_pct:1.0,otra_doc_pct:1.8,sin_doc_pct:0.9,alquila_pct:41.3,prestada_pct:5.2,obra_pct:91.2,plan_pct:1.1,sin_salud:12338,sin_salud_pct:7.7,nunca_escuela_pct:2.3,pob14:143949,pea_pct:66.2,tasa_empleo:61.6,desoc_pct:7.0,inact_pct:33.8,age_pct:[3.3,3.9,3.8,6.0,10.1,9.6,8.2,6.9,6.2,5.9,5.5,5.2,5.1,4.8,4.7,4.3,3.1,1.9,1.0,0.3,0.1],age_abs:[5379,6268,6180,9557,16263,15467,13240,11088,9880,9414,8760,8288,8261,7770,7573,6928,4983,3049,1665,514,82]},
+ "3":{color:"#534AB7",bg:"#EEEDFE",desc:"Balvanera · San Cristóbal",pob:193537,viv:110264,pers_viv:1.76,hogares:92555,barrios:{"Balvanera":143659,"San Cristóbal":49878},fem:104323,masc:89214,edad_mediana:38.2,pob014:27085,pob014_pct:14.0,pob65p:30948,pob65p_pct:16.0,propia_pct:41.6,escritura_pct:93.4,boleto_pct:2.1,otra_doc_pct:3.2,sin_doc_pct:1.3,alquila_pct:47.9,prestada_pct:4.9,obra_pct:77.4,plan_pct:2.5,sin_salud:38920,sin_salud_pct:20.1,nunca_escuela_pct:3.7,pob14:168411,pea_pct:69.1,tasa_empleo:63.3,desoc_pct:8.3,inact_pct:30.9,age_pct:[3.8,5.0,5.2,5.6,7.8,8.6,8.9,7.8,7.5,6.9,6.2,5.5,5.2,4.6,3.9,3.2,2.1,1.3,0.7,0.2,0.0],age_abs:[7347,9663,10075,10889,15187,16710,17204,15174,14462,13261,12002,10594,10021,8951,7519,6231,4110,2453,1285,361,38]},
+ "4":{color:"#993C1D",bg:"#FAECE7",desc:"La Boca · Barracas · Parque Patricios · Nueva Pompeya",pob:227024,viv:100950,pers_viv:2.25,hogares:91186,barrios:{"Barracas":97982,"La Boca":44205,"Nueva Pompeya":44180,"Parque Patricios":40657},fem:119835,masc:107189,edad_mediana:36.0,pob014:42541,pob014_pct:18.7,pob65p:31021,pob65p_pct:13.7,propia_pct:53.8,escritura_pct:72.3,boleto_pct:7.8,otra_doc_pct:5.2,sin_doc_pct:14.7,alquila_pct:34.5,prestada_pct:5.0,obra_pct:68.0,plan_pct:3.5,sin_salud:64792,sin_salud_pct:28.5,nunca_escuela_pct:3.9,pob14:187518,pea_pct:68.0,tasa_empleo:61.9,desoc_pct:9.0,inact_pct:32.0,age_pct:[4.8,6.9,7.0,7.0,7.4,7.5,7.9,7.5,7.5,6.8,6.0,5.2,4.8,4.1,3.4,2.6,1.8,1.1,0.5,0.1,0.0],age_abs:[10934,15640,15967,15932,16731,17079,17873,17137,17093,15451,13510,11769,10887,9394,7706,5985,3979,2411,1206,307,33]},
+ "5":{color:"#185FA5",bg:"#E6F1FB",desc:"Almagro · Boedo",pob:192449,viv:105979,pers_viv:1.82,hogares:93208,barrios:{"Almagro":142769,"Boedo":49680},fem:105002,masc:87447,edad_mediana:40.3,pob014:25100,pob014_pct:13.0,pob65p:34670,pob65p_pct:18.0,propia_pct:48.6,escritura_pct:94.5,boleto_pct:2.2,otra_doc_pct:2.6,sin_doc_pct:0.8,alquila_pct:41.3,prestada_pct:4.8,obra_pct:85.7,plan_pct:1.9,sin_salud:23938,sin_salud_pct:12.4,nunca_escuela_pct:2.7,pob14:169148,pea_pct:69.5,tasa_empleo:64.5,desoc_pct:7.2,inact_pct:30.5,age_pct:[3.5,4.8,4.8,5.3,6.4,7.7,8.7,8.4,7.8,7.2,6.2,5.7,5.4,5.0,4.5,3.6,2.4,1.5,0.7,0.2,0.0],age_abs:[6666,9167,9267,10141,12395,14847,16744,16206,15065,13938,11908,11008,10427,9671,8682,6899,4654,2872,1418,428,46]},
+ "6":{color:"#0F6E56",bg:"#E1F5EE",desc:"Caballito",pob:201764,viv:106669,pers_viv:1.89,hogares:95464,barrios:{"Caballito":201764},fem:110746,masc:91018,edad_mediana:41.9,pob014:27128,pob014_pct:13.4,pob65p:39967,pob65p_pct:19.8,propia_pct:54.9,escritura_pct:95.5,boleto_pct:1.7,otra_doc_pct:2.0,sin_doc_pct:0.7,alquila_pct:35.3,prestada_pct:4.5,obra_pct:90.5,plan_pct:1.5,sin_salud:16117,sin_salud_pct:8.0,nunca_escuela_pct:2.8,pob14:176660,pea_pct:68.2,tasa_empleo:63.5,desoc_pct:6.8,inact_pct:31.8,age_pct:[3.6,4.8,5.0,5.1,5.5,6.8,8.1,8.1,8.0,7.5,6.3,5.7,5.8,5.4,4.9,4.0,2.7,1.7,0.9,0.3,0.0],age_abs:[7327,9650,10151,10331,11153,13649,16273,16317,16111,15109,12623,11491,11612,10811,9822,8171,5450,3371,1775,512,55]},
+ "7":{color:"#854F0B",bg:"#FAEEDA",desc:"Flores · Parque Chacabuco",pob:213262,viv:99624,pers_viv:2.14,hogares:90970,barrios:{"Flores":151440,"Parque Chacabuco":61822},fem:113904,masc:99358,edad_mediana:40.1,pob014:33126,pob014_pct:15.5,pob65p:37857,pob65p_pct:17.8,propia_pct:55.6,escritura_pct:90.7,boleto_pct:3.5,otra_doc_pct:3.4,sin_doc_pct:2.5,alquila_pct:34.0,prestada_pct:4.8,obra_pct:80.1,plan_pct:2.4,sin_salud:37324,sin_salud_pct:17.5,nunca_escuela_pct:3.4,pob14:182653,pea_pct:66.5,tasa_empleo:61.2,desoc_pct:7.9,inact_pct:33.5,age_pct:[4.0,5.6,5.9,6.0,6.4,6.8,7.6,7.5,7.5,7.1,6.3,5.7,5.7,5.0,4.4,3.5,2.4,1.5,0.8,0.2,0.0],age_abs:[8530,11938,12658,12902,13657,14468,16205,15901,16007,15209,13455,12214,12261,10703,9384,7438,5069,3150,1637,434,42]},
+ "8":{color:"#A32D2D",bg:"#FCEBEB",desc:"Villa Soldati · Villa Riachuelo · Villa Lugano",pob:203888,viv:73029,pers_viv:2.79,hogares:70622,barrios:{"Villa Lugano":136747,"Villa Riachuelo":15581,"Villa Soldati":51560},fem:107116,masc:96772,edad_mediana:32.4,pob014:45453,pob014_pct:22.3,pob65p:22550,pob65p_pct:11.1,propia_pct:62.4,escritura_pct:59.0,boleto_pct:10.9,otra_doc_pct:8.9,sin_doc_pct:21.2,alquila_pct:25.7,prestada_pct:5.4,obra_pct:53.9,plan_pct:4.5,sin_salud:84747,sin_salud_pct:41.6,nunca_escuela_pct:4.9,pob14:161860,pea_pct:65.7,tasa_empleo:59.0,desoc_pct:10.3,inact_pct:34.3,age_pct:[5.7,8.1,8.6,8.1,8.1,7.8,7.7,7.3,6.9,6.4,5.6,4.8,4.0,3.4,2.7,2.1,1.5,0.8,0.4,0.1,0.0],age_abs:[11537,16473,17443,16432,16519,15957,15724,14819,14127,13024,11357,9736,8190,6971,5599,4338,2969,1707,758,182,26]},
+ "9":{color:"#3B6D11",bg:"#EAF3DE",desc:"Liniers · Mataderos · Parque Avellaneda",pob:167908,viv:75315,pers_viv:2.23,hogares:66753,barrios:{"Liniers":47093,"Mataderos":67455,"Parque Avellaneda":53360},fem:88417,masc:79491,edad_mediana:40.0,pob014:27428,pob014_pct:16.3,pob65p:29092,pob65p_pct:17.3,propia_pct:58.5,escritura_pct:88.4,boleto_pct:3.0,otra_doc_pct:4.0,sin_doc_pct:4.5,alquila_pct:30.0,prestada_pct:5.7,obra_pct:74.8,plan_pct:2.9,sin_salud:37381,sin_salud_pct:22.3,nunca_escuela_pct:3.4,pob14:142631,pea_pct:64.7,tasa_empleo:59.1,desoc_pct:8.6,inact_pct:35.3,age_pct:[4.0,5.8,6.5,6.8,6.5,6.4,6.8,7.1,7.5,7.3,6.6,5.8,5.5,4.9,4.2,3.5,2.3,1.4,0.7,0.2,0.0],age_abs:[6784,9783,10861,11440,10981,10769,11454,11906,12604,12224,11055,9785,9170,8298,7110,5844,3906,2396,1220,289,29]},
+ "10":{color:"#5F5E5A",bg:"#F1EFE8",desc:"Villa Real · Monte Castro · Versalles · Floresta · Vélez Sarsfield · Villa Luro",pob:171896,viv:84220,pers_viv:2.04,hogares:73964,barrios:{"Floresta":36846,"Monte Castro":35825,"Vélez Sarsfield":34811,"Versalles":16024,"Villa Luro":34645,"Villa Real":13745},fem:91566,masc:80330,edad_mediana:41.6,pob014:25456,pob014_pct:14.8,pob65p:32997,pob65p_pct:19.2,propia_pct:58.6,escritura_pct:93.7,boleto_pct:1.9,otra_doc_pct:3.1,sin_doc_pct:1.3,alquila_pct:30.9,prestada_pct:5.3,obra_pct:83.0,plan_pct:2.3,sin_salud:25213,sin_salud_pct:14.7,nunca_escuela_pct:2.7,pob14:148415,pea_pct:65.6,tasa_empleo:60.6,desoc_pct:7.6,inact_pct:34.4,age_pct:[3.8,5.3,5.7,6.0,6.0,6.3,7.0,7.4,7.6,7.4,6.4,5.9,6.0,5.5,4.8,3.8,2.5,1.6,0.8,0.2,0.0],age_abs:[6513,9136,9807,10366,10325,10758,12075,12668,13058,12722,11030,10186,10255,9369,8292,6448,4381,2784,1345,343,35]},
+ "11":{color:"#444441",bg:"#F1EFE8",desc:"Villa Gral. Mitre · Villa Devoto · Villa del Parque · Villa Santa Rita",pob:201905,viv:100777,pers_viv:2.0,hogares:87910,barrios:{"Villa del Parque":61236,"Villa Devoto":71602,"Villa General Mitre":34250,"Villa Santa Rita":34817},fem:108217,masc:93688,edad_mediana:42.3,pob014:28649,pob014_pct:14.2,pob65p:39298,pob65p_pct:19.5,propia_pct:60.5,escritura_pct:94.7,boleto_pct:1.7,otra_doc_pct:2.5,sin_doc_pct:1.1,alquila_pct:29.2,prestada_pct:5.0,obra_pct:87.8,plan_pct:1.8,sin_salud:21142,sin_salud_pct:10.5,nunca_escuela_pct:2.8,pob14:175447,pea_pct:66.2,tasa_empleo:61.4,desoc_pct:7.3,inact_pct:33.8,age_pct:[3.7,5.1,5.5,5.9,5.9,6.1,6.9,7.4,7.9,7.6,6.6,6.0,6.0,5.4,4.9,3.9,2.6,1.6,0.8,0.2,0.0],age_abs:[7414,10220,11015,11836,11814,12375,13940,14982,16042,15389,13377,12188,12015,10877,9824,7942,5274,3308,1620,403,50]},
+ "12":{color:"#185FA5",bg:"#E6F1FB",desc:"Coghlan · Saavedra · Villa Urquiza · Villa Pueyrredón",pob:235364,viv:120868,pers_viv:1.95,hogares:108085,barrios:{"Coghlan":20803,"Saavedra":53665,"Villa Pueyrredón":46603,"Villa Urquiza":114293},fem:126101,masc:109263,edad_mediana:40.7,pob014:33952,pob014_pct:14.4,pob65p:42372,pob65p_pct:18.0,propia_pct:56.0,escritura_pct:94.0,boleto_pct:2.4,otra_doc_pct:2.8,sin_doc_pct:0.8,alquila_pct:33.9,prestada_pct:4.9,obra_pct:90.0,plan_pct:1.4,sin_salud:20314,sin_salud_pct:8.6,nunca_escuela_pct:2.6,pob14:203769,pea_pct:69.2,tasa_empleo:64.5,desoc_pct:6.8,inact_pct:30.8,age_pct:[4.0,5.3,5.2,5.2,5.3,6.6,8.4,8.8,8.6,7.7,6.1,5.6,5.4,5.0,4.5,3.6,2.4,1.5,0.8,0.2,0.0],age_abs:[9465,12363,12124,12265,12434,15455,19861,20778,20138,18083,14277,13074,12675,11699,10605,8555,5712,3533,1769,437,62]},
+ "13":{color:"#0F6E56",bg:"#E1F5EE",desc:"Núñez · Belgrano · Colegiales",pob:262330,viv:145490,pers_viv:1.8,hogares:127241,barrios:{"Belgrano":142809,"Colegiales":55242,"Núñez":64279},fem:143839,masc:118491,edad_mediana:42.0,pob014:34989,pob014_pct:13.3,pob65p:53085,pob65p_pct:20.2,propia_pct:54.6,escritura_pct:96.0,boleto_pct:1.7,otra_doc_pct:1.8,sin_doc_pct:0.6,alquila_pct:35.1,prestada_pct:4.7,obra_pct:92.8,plan_pct:1.1,sin_salud:15975,sin_salud_pct:6.1,nunca_escuela_pct:2.2,pob14:229892,pea_pct:68.1,tasa_empleo:64.1,desoc_pct:6.0,inact_pct:31.9,age_pct:[3.7,4.7,4.9,5.4,5.9,6.8,7.8,7.7,7.6,7.5,6.5,5.9,5.4,5.1,4.8,4.2,2.9,1.9,1.0,0.3,0.0],age_abs:[9697,12315,12977,14071,15599,17855,20572,20269,19880,19564,16933,15391,14122,13357,12606,11091,7718,4912,2613,705,83]},
+ "14":{color:"#7F77DD",bg:"#EEEDFE",desc:"Palermo",pob:247252,viv:150774,pers_viv:1.64,hogares:127733,barrios:{"Palermo":247252},fem:136640,masc:110612,edad_mediana:39.6,pob014:29490,pob014_pct:11.9,pob65p:47219,pob65p_pct:19.1,propia_pct:48.5,escritura_pct:95.9,boleto_pct:1.5,otra_doc_pct:1.9,sin_doc_pct:0.7,alquila_pct:40.4,prestada_pct:4.8,obra_pct:91.4,plan_pct:1.2,sin_salud:18349,sin_salud_pct:7.4,nunca_escuela_pct:2.4,pob14:219744,pea_pct:69.3,tasa_empleo:65.1,desoc_pct:6.0,inact_pct:30.7,age_pct:[3.6,4.2,4.1,5.1,7.5,8.6,9.3,8.2,7.1,6.5,5.9,5.5,5.2,4.8,4.5,4.0,2.8,1.7,0.9,0.2,0.0],age_abs:[8898,10392,10200,12502,18573,21361,22952,20250,17666,15992,14562,13716,12969,11930,11186,10011,6970,4264,2184,608,66]},
+ "15":{color:"#BA7517",bg:"#FAEEDA",desc:"Chacarita · Villa Crespo · Paternal · Villa Ortúzar · Agronomía · Parque Chas",pob:195265,viv:102752,pers_viv:1.9,hogares:90717,barrios:{"Agronomía":13750,"Chacarita":31321,"Parque Chas":18755,"Paternal":21092,"Villa Crespo":87877,"Villa Ortúzar":22470},fem:104706,masc:90559,edad_mediana:39.6,pob014:27371,pob014_pct:14.0,pob65p:32376,pob65p_pct:16.6,propia_pct:53.0,escritura_pct:92.0,boleto_pct:2.7,otra_doc_pct:3.3,sin_doc_pct:2.0,alquila_pct:36.5,prestada_pct:4.9,obra_pct:84.4,plan_pct:2.0,sin_salud:26646,sin_salud_pct:13.6,nunca_escuela_pct:2.6,pob14:169782,pea_pct:70.8,tasa_empleo:66.0,desoc_pct:6.8,inact_pct:29.2,age_pct:[3.9,5.0,5.1,5.5,6.1,7.5,8.9,8.8,8.2,7.4,6.0,5.6,5.4,4.8,4.2,3.2,2.1,1.3,0.7,0.2,0.0],age_abs:[7543,9818,10010,10652,11990,14574,17464,17116,15930,14369,11800,11023,10600,9393,8238,6323,4099,2579,1357,347,40]}
+};
+const CABA_AGE = [4.0,5.3,5.5,5.9,6.9,7.5,8.1,7.8,7.6,7.1,6.1,5.6,5.3,4.8,4.3,3.5,2.4,1.5,0.7,0.2,0.0];
+const AGE_LBL = ['0-4','5-9','10-14','15-19','20-24','25-29','30-34','35-39','40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80-84','85-89','90-94','95-99','100+'];
+const TYPE_CLASS = {Parque:'t-parque',Plaza:'t-plaza',Plazoleta:'t-plazoleta',Paseo:'t-paseo',Lineal:'t-lineal',Reserva:'t-reserva'};
+const BIO = {
+ "1":"La Comuna 1 reúne a Retiro, San Nicolás, Puerto Madero, San Telmo, Montserrat y Constitución, en el núcleo histórico, financiero y portuario de la Ciudad. Con 221.001 habitantes, registra la mayor proporción de hogares inquilinos de CABA (48,3%) y el 27,9% de la población cuenta únicamente con cobertura pública de salud. El 4,1% no tiene escolaridad registrada, la segunda proporción más alta de CABA.",
+ "2":"La Comuna 2 está conformada íntegramente por Recoleta. Sus 160.609 habitantes presentan la mayor proporción de adultos mayores de 65 años de la Ciudad (20,3%) y una edad mediana de 38,6 años. Registra la menor densidad habitacional de CABA (1,49 personas por vivienda) y el 91,2% de su población cuenta con obra social o prepaga.",
+ "3":"La Comuna 3, integrada por Balvanera y San Cristóbal, se ubica en el centro de la Ciudad. Con 193.537 habitantes, presenta la segunda mayor proporción de hogares inquilinos de CABA (47,9%). El 20,1% de la población cuenta únicamente con cobertura pública de salud y la tasa de desempleo, según el Censo 2022, es del 8,3%.",
+ "4":"En el sur de la Ciudad, La Boca, Barracas, Parque Patricios y Nueva Pompeya integran la Comuna 4. Cuenta con 227.024 habitantes y una estructura demográfica joven: el 18,7% tiene menos de 14 años y la edad mediana es de 36,0 años. Registra 2,25 personas por vivienda y un 14,7% de viviendas propias sin escritura, ambos valores entre los más altos de CABA. El 34,7% asiste actualmente a un establecimiento educativo y el 3,9% no tiene escolaridad registrada.",
+ "5":"Almagro y Boedo conforman la Comuna 5, en el área central de la Ciudad. Con 28.996 hab/km² es la tercera de mayor densidad poblacional de CABA. No registra ningún parque de más de 2 ha y el 41,3% de los hogares son inquilinos, uno de los valores más altos de la Ciudad.",
+ "6":"La Comuna 6, conformada exclusivamente por Caballito, cuenta con el Parque Centenario y el Parque Rivadavia entre sus principales espacios verdes. Su edad mediana es de 41,9 años y el 19,8% de la población tiene 65 años o más. El 54,9% de los hogares son propietarios y el 8,0% de la población cuenta únicamente con cobertura pública de salud.",
+ "7":"Flores y Parque Chacabuco integran la Comuna 7, en el oeste de la Ciudad. Sus 213.262 habitantes presentan una densidad habitacional de 2,14 personas por vivienda, por encima del promedio de CABA, y una mayoría de hogares propietarios (55,6%). El 17,8% de su población tiene 65 años o más.",
+ "8":"En el sudoeste de la Ciudad, Villa Soldati, Villa Riachuelo y Villa Lugano conforman la Comuna 8. Registra la mayor densidad habitacional de CABA (2,79 personas por vivienda) y la población más joven de la Ciudad: el 22,3% tiene menos de 14 años y la edad mediana es de 32,4 años. El 41,6% cuenta únicamente con cobertura pública de salud, el valor más alto de CABA. El 37,5% asiste actualmente a un establecimiento educativo —la proporción más alta de CABA— y el 4,9% no tiene escolaridad registrada, también el valor más alto de la Ciudad.",
+ "9":"Liniers, Mataderos y Parque Avellaneda forman la Comuna 9, en el oeste de la Ciudad. Con 167.908 habitantes y el 58,5% de hogares propietarios, presenta una densidad habitacional de 2,23 personas por vivienda. El 22,3% de la población cuenta únicamente con cobertura pública de salud y la tasa de desempleo, según el Censo 2022, es del 8,6%.",
+ "10":"Seis barrios del oeste residencial —Villa Real, Monte Castro, Versalles, Floresta, Vélez Sarsfield y Villa Luro— integran la Comuna 10. Con una edad mediana de 41,6 años y un 19,2% de población mayor de 65 años, presenta una proporción de adultos mayores superior al promedio de CABA. El 58,6% de los hogares son propietarios.",
+ "11":"Villa General Mitre, Villa Devoto, Villa del Parque y Villa Santa Rita componen la Comuna 11, que registra la edad mediana más alta de CABA (42,3 años) y un 19,5% de población mayor de 65 años. El 60,5% de los hogares son propietarios y el 94,7% de las viviendas propias cuenta con escritura.",
+ "12":"La Comuna 12, que abarca Coghlan, Saavedra, Villa Urquiza y Villa Pueyrredón, registró el mayor crecimiento poblacional de la Ciudad entre 2010 y 2022 (+18%). Cuenta con 235.364 habitantes y una mayoría de hogares propietarios (56,0%).",
+ "13":"Núñez, Belgrano y Colegiales integran la Comuna 13, la más poblada de la Ciudad con 262.330 habitantes. Registra la mayor cobertura formal de salud de CABA (92,8% con obra social o prepaga) y la tasa de desempleo más baja según el Censo 2022 (6,0%). El 20,2% de la población tiene 65 años o más. Registra la menor proporción de población sin escolaridad registrada de CABA (2,2%).",
+ "14":"La Comuna 14, integrada únicamente por Palermo, concentra el mayor espacio verde de la Ciudad a través del Parque Tres de Febrero (160 ha). Con 247.252 habitantes, presenta una de las proporciones de hogares inquilinos más altas de CABA (40,4%). El 7,4% de la población cuenta únicamente con cobertura pública de salud y la tasa de empleo, según el Censo 2022, es del 65,1%, una de las más altas de la Ciudad.",
+ "15":"Compuesta por Chacarita, Villa Crespo, La Paternal, Villa Ortúzar, Agronomía y Parque Chas, la Comuna 15 registra la mayor tasa de actividad económica de CABA según el Censo 2022, con el 70,8% de la población económicamente activa. El 53,0% de los hogares son propietarios y el 13,6% de la población cuenta únicamente con cobertura pública de salud."
+};
+const GREEN = {
+ "1":{m2:"~3,5",parques:2,plazas:10,insight:"La C1 cuenta con 2 parques y 10 plazas. La Reserva Ecol&#243;gica Costanera Sur (350 ha) es el espacio verde m&#225;s grande de CABA y el principal pulm&#243;n de la comuna.",items:[["Reserva Ecológica Costanera Sur","Reserva","Costanera","350 ha. El espacio verde más grande y biodiverso de CABA."],["Parque Lezama","Parque","San Telmo","Defensa 1712. Histórico. Canil, anfiteatro, Museo Histórico Nacional."],["Plaza Garay","Plaza","Constitución","Av. Juan de Garay 1670. Punto Verde."],["Plaza Lavalle","Plaza","San Nicolás","Talcahuano 678. Vegetación centenaria."],["Plaza Libertad","Plaza","Retiro","Libertad 980."],["Plaza San Martín","Plaza","Retiro","Pulmón verde junto a Torre Monumental."],["Plaza Rosario Vera Peñaloza","Plaza","San Telmo","Chacabuco 1250. Punto Verde."],["Plaza Monserrat","Plaza","Monserrat","México 1352."],["Plaza Lola Mora","Plaza","Constitución","Virrey Cevallos y Av. San Juan."],["Paseo de la Historieta","Paseo","La Boca","Pedro de Mendoza. Espacio público lineal."]]},
+ "2":{m2:"~6,2",parques:2,plazas:7,insight:"Con 6,3 km², la C2 es la comuna de menor superficie de CABA. Cuenta con 2 parques y 7 plazas concentrados en el tejido residencial de Recoleta.",items:[["Parque Thays (ex Botánico)","Parque","Recoleta","Av. del Libertador y Av. Callao. Árboles centenarios, gatos históricos."],["Plaza Rodríguez Peña","Plaza","Recoleta","Marcelo T. de Alvear 1763. Canil."],["Plaza Monseñor de Andrea","Plaza","Recoleta","Jean Jaures 1050. Punto Verde y Canil."],["Plaza Tte. Emilio Mitre","Plaza","Recoleta","Av. Gral. Las Heras 2280. Cancha deportiva."],["Plazoleta Petronila Rodríguez","Plazoleta","Recoleta","Paraguay 1730."],["Plaza Francia","Plaza","Recoleta","Av. del Libertador. Feria de artesanos."],["Parque Centenario (borde)","Parque","Recoleta","Borde norte de la C2."]]},
+ "3":{m2:"~0,8",parques:0,plazas:5,insight:"La C3 es la de mayor densidad poblacional de CABA (30.663 hab/km&#178;) y no registra ning&#250;n parque de m&#225;s de 2 ha. Sus 5 plazas son los principales espacios verdes de la comuna.",items:[["Parque de la Estación","Parque","Balvanera","Alrededores de Once. Nueva área verde sobre terrenos ferroviarios."],["Plaza Manzana 66","Plaza","Balvanera","Moreno y Jujuy. Recuperada tras años de reclamo vecinal."],["Plaza Velasco Ibarra","Plaza","Balvanera","Av. Jujuy 700. Punto Verde."],["Plaza Raúl González Tuñón","Plaza","Balvanera","24 de Noviembre 141. Canil."],["Plaza Fumarola","Plaza","San Cristóbal","Perón y Anchorena. En renovación 2024."]]},
+ "4":{m2:"~1,8",parques:5,plazas:9,insight:"La C4 es la de mayor superficie de CABA (22,7 km&#178;) y concentra 5 parques y 9 plazas, la mayor&#237;a en el barrio de Parque Patricios.",items:[["Parque de los Patricios","Parque","Parque Patricios","Av. Caseros – Pepirí – Uspallata. Principal pulmón verde."],["Parque Florentino Ameghino","Parque","Parque Patricios","Av. Caseros – Monasterio. Renovado con patio de juegos."],["Parque Estación Buenos Aires","Parque","Barracas","Av. Suárez 3108. Complejo residencial y verde."],["Parque Flora Nativa B.Q. Martín","Parque","La Boca","Irala – Aristóbulo del Valle. Biodiversidad nativa."],["Parque José C. Paz","Parque","Parque Patricios","Pepirí 501."],["Plaza Colombia","Plaza","Barracas","Av. Montes de Oca y Brandsen. Punto Verde."],["Plaza Matheu","Plaza","La Boca","Hernandarias 1250. Canil."],["Plaza Benito Quinquela Martín","Plaza","La Boca","Herrera 1498."],["Plaza Islas Malvinas","Plaza","La Boca","Pedro de Mendoza – 20 de Sep."],["Plaza Obispo Angelelli","Plaza","Nueva Pompeya","Berón de Astrada – Erezcano."],["Plaza Guillermo Barbieri","Plaza","Parque Patricios","Los Patos – Montesquieu."],["Paseo del Riachuelo","Paseo","La Boca","Arturo Beruti 4590."],["Camino de Sirga (Parque Lineal)","Lineal","Barracas/La Boca","5,2 km sobre el Riachuelo. 179.690 m² en recuperación parcial."]]},
+ "5":{m2:"~0,2",parques:0,plazas:8,insight:"La C5 registra la tercera densidad poblacional m&#225;s alta de CABA (28.996 hab/km&#178;) y no cuenta con ning&#250;n parque de m&#225;s de 2 ha. Sus 8 plazas son los principales espacios verdes de la comuna.",items:[["Plaza Almagro","Plaza","Almagro","Sarmiento y Salguero. Canil y Punto Verde."],["Plaza Mariano Boedo","Plaza","Boedo","Carlos Calvo 3300. Canil, básquet y Punto Verde."],["Plaza 18 de Diciembre","Plazoleta","Boedo","Postas de calistenia."],["Plaza Sara Vaamonde","Plazoleta","Almagro","Sánchez de Bustamante 759. Renovada 2024."],["Placita Independencia 4264","Plazoleta","Almagro","Gestionada por vecinos. Modelo de apropiación ciudadana."],["Parque Lineal Almagro","Lineal","Almagro","Sobre vías del Sarmiento. 1.412 m² totales, 380 m² verdes."],["Derivador Carlos Calvo – 33 Orientales","Paseo","Boedo","En ejecución (2024). Canal derivador con valor público."]]},
+ "6":{m2:"~4,0",parques:2,plazas:7,insight:"La C6 registra la segunda densidad poblacional m&#225;s alta de CABA (29.427 hab/km&#178;). Cuenta con 2 parques y 7 plazas, siendo el Parque Centenario (6 ha) y el Parque Rivadavia los principales espacios verdes de la comuna.",items:[["Parque Centenario","Parque","Caballito","Av. Patricias Argentinas. 6 ha, lago, anfiteatro, feria dominical."],["Parque Rivadavia","Parque","Caballito","Av. Rivadavia y Florencio Balcarce. Feria del libro usado."],["Plaza Irlanda","Plaza","Caballito","Donato Álvarez y Gaona. Punto Verde."],["Plaza Giordano Bruno","Plaza","Caballito","Giordano Bruno y Neuquén. Equipamiento deportivo."],["Plaza Dr. Amadeo Sabattini","Plaza","Caballito","Colpayo 670. Canil."],["Plaza Crisólogo Larralde","Plaza","Caballito","Yerbal 770."],["Plaza Pueyrredón","Plaza","Flores","Av. Rivadavia y Artigas."]]},
+ "7":{m2:"~2,5",parques:2,plazas:8,insight:"El Parque Chacabuco (14 ha) es el principal espacio verde de la C7, con pista de atletismo, canchas y piscina. La comuna cuenta además con el Parque Arenales y 8 plazas distribuidas entre Flores y Parque Chacabuco.",items:[["Parque Chacabuco","Parque","Parque Chacabuco","Av. Asamblea y Puán. 14 ha. Pista atletismo, canchas, piscina."],["Parque Arenales","Parque","Flores","Corredor verde en zona sur de Flores."],["Plaza de los Periodistas","Plaza","Flores","Terrada, Neuquén, Páez y Nazca. Punto Verde."],["Plaza de la Misericordia","Plaza","Flores","Lautaro y Francisco Bilbao. Punto Verde."],["Plaza 11 de Noviembre","Plaza","Flores","Av. Directorio e Italia."],["Plaza Ángel Gris","Plaza","Flores","Av. Avellaneda y Donato Álvarez."],["Plaza Miserere","Plaza","Flores","Hipólito Yrigoyen y Pueyrredón."],["Plaza Pueyrredón","Plaza","Flores","Av. Rivadavia y Artigas."]]},
+ "8":{m2:"~5,0",parques:3,plazas:6,insight:"La C8 es la de menor densidad poblacional de CABA (9.083 hab/km²) y segunda en superficie (22,5 km²). El Parque Indoamericano (130 ha) es el segundo espacio verde más grande de la Ciudad.",items:[["Parque Indoamericano","Parque","Villa Soldati","130 ha. Segundo parque más grande de CABA. Conflictos por tomas de tierras."],["Parque de las Victorias","Parque","Villa Lugano","Av. Larrazabal 4750. Punto Verde."],["Barrio Olímpico","Paseo","Villa Soldati","23 de Junio y Camet. Complejo deportivo."],["Plaza Democracia","Plaza","Villa Lugano","Av. Coronel Roca 5900. Punto Verde."],["Plazoleta Scanderberg","Plazoleta","Villa Lugano","Ricardo Güiraldes 3130."],["Parque Lineal Riachuelo","Lineal","Villa Riachuelo","Borde sur sobre el Riachuelo. En desarrollo."]]},
+ "9":{m2:"~6,0",parques:2,plazas:5,insight:"La C9 cuenta con 2 parques y 5 plazas. El Parque Avellaneda (35 ha) es el tercer espacio verde m&#225;s grande de CABA y el principal pulm&#243;n de la comuna.",items:[["Parque Avellaneda","Parque","Parque Avellaneda","Av. Directorio y Fernández. 35 ha. Molinos históricos, pista atletismo."],["Parque Santojanni","Parque","Liniers","Lisandro de la Torre y Patrón. Verde y pistas deportivas."],["Plaza Rómulo Zabala","Plaza","Mataderos","Ercilla 7502."],["Plaza Sargento Cabral","Plaza","Liniers","José León Suarez y Martínez de Hoz."],["Feria de Mataderos","Paseo","Mataderos","Los Corrales. Espacio cultural-gastronómico popular."]]},
+ "10":{m2:"~1,8",parques:0,plazas:9,insight:"La C10 no registra ningún parque de más de 2 ha. Sus 9 plazas están distribuidas entre seis barrios de tejido residencial horizontal.",items:[["Plaza Vélez Sársfield","Plaza","Floresta","Chivilcoy y Bogotá. Punto Verde."],["Plaza Monte Castro","Plaza","Monte Castro","Gualeguaychú y Miranda."],["Plaza Monseñor Lafitte","Plaza","Monte Castro","Allende y Arregui."],["Plaza Ciudad de Banff","Plazoleta","Versalles","Arregui y Lisboa."],["Plaza Las Toscaneras de Villa Real","Plaza","Villa Real","Ramón Lista y Moliere."],["Plaza Dr. Juan B. Terán","Plaza","Villa Real","Melincué 5402."],["Plaza Ramón Falcón","Plaza","Vélez Sarsfield","Dip. Nac. Osvaldo Benedetti 101."]]},
+ "11":{m2:"~2,2",parques:2,plazas:6,insight:"La C11 tiene 14,1 km&#178; y cuenta con 2 parques y 6 plazas distribuidos entre Villa Devoto, Villa del Parque, Villa General Mitre y Villa Santa Rita.",items:[["Parque Onega","Parque","Villa Devoto","Bahía Blanca 4620. Renovado con canil y juegos."],["Parque Aristóbulo del Valle","Parque","Villa del Parque","Marcos Sastre 3250."],["Plaza Nuestra Señora de la Asunción","Plaza","Villa Santa Rita","Luis Viale 2217."],["Plaza Ravignani El Maestro","Plaza","Villa Devoto","Av. Francisco Beiró 5100."],["Plaza Arenales","Plaza","Villa Devoto","Mercedes y Nueva York."],["Plaza Aristóbulo del Valle","Plaza","Villa del Parque","Campana y Baigorria. Punto Verde."]]},
+ "12":{m2:"~3,5",parques:2,plazas:9,insight:"El Parque Saavedra (11 ha) y el Parque Pioneros de la Antártida son los principales espacios verdes de la C12, con 9 plazas distribuidas entre Saavedra, Villa Urquiza, Villa Pueyrredón y Coghlan.",items:[["Parque Saavedra","Parque","Saavedra","Roque Pérez y Paroissien. 11 ha. Punto Verde, canil."],["Parque Pioneros de la Antártida","Parque","Saavedra","Juan Bautista de Lasalle 4660."],["Plaza Echeverría","Plaza","Villa Urquiza","Dr. Pedro Ignacio Rivera y Bauness. Punto Verde."],["Plaza Benjamín Vicuña Mackenna","Plaza","Saavedra","Arias y Av. Cramer."],["Plaza Nunca Más","Plaza","Villa Pueyrredón","Obispo San Alberto 2690."],["Plaza Rodríguez Martín","Plaza","Villa Pueyrredón","Pareja 3046."],["Plaza Marcos Sastre","Plaza","Villa Urquiza","Av. Monroe 4600."],["Estación Coghlan","Plaza","Coghlan","Franklin D. Roosevelt 36."]]},
+ "13":{m2:"~4,5",parques:2,plazas:10,insight:"La C13 cuenta con 2 parques y 10 plazas distribuidos entre Belgrano, N&#250;&#241;ez y Colegiales. Las Barrancas de Belgrano y el Parque de los Ni&#241;os son los principales espacios verdes de la comuna.",items:[["Barrancas de Belgrano","Parque","Belgrano","Parque icónico sobre la barranca. Eventos culturales."],["Parque de los Niños","Parque","Núñez","Borde con costanera norte."],["Plaza Belgrano","Plaza","Belgrano","Juramento y Cuba."],["Plaza Manuel Belgrano","Plaza","Belgrano","Cuba y Juramento. Punto Verde."],["Plaza Castelli","Plaza","Belgrano","Conde 2080. Canil, Punto Verde."],["Plaza Mafalda","Plaza","Colegiales","Santos Dumont y Gral. Enrique Martínez."],["Plaza Noruega","Plaza","Belgrano","Amenábar 2174."],["Plaza Alberti","Plaza","Belgrano","Arcos 2667."],["Paseo de las Américas","Paseo","Núñez","Ramsay y Blanco Encalada."],["Barrio Chino – Arribeños","Paseo","Belgrano","Verde comercial y cultural."]]},
+ "14":{m2:"~8,0",parques:4,plazas:12,insight:"La C14 (Palermo) tiene la mayor dotación de verde de CABA. El Parque Tres de Febrero (160 ha) es el mayor parque urbano accesible de la ciudad.",items:[["Parque Tres de Febrero","Parque","Palermo","160 ha. Rosedaleda, Planetario, Lagos, Jardín Japonés."],["Bosques de Palermo","Parque","Palermo","Bosque urbano adyacente al Parque Tres de Febrero."],["Parque Las Heras","Parque","Palermo","Salguero 2450. Punto Verde, cancha hockey."],["Parque Ferroviario Palermo","Lineal","Palermo","5.000 m² sobre vías del San Martín."],["Plaza Armenia","Plaza","Palermo","Malabia y Nicaragua. Punto Verde."],["Plaza Güemes","Plaza","Palermo","Medrano y Charcas."],["Plaza Serrano","Plaza","Palermo","J. L. Borges y Honduras."],["Plaza Italia","Plaza","Palermo","Santa Fe y Sarmiento. Feria y verde activo."],["Plaza de las Ciencias","Plaza","Palermo","Godoy Cruz – Soler – Paraguay. 10.100 m²."],["Plaza Perú","Plaza","Palermo","Av. Figueroa Alcorta – MALBA."],["Jardín Japonés","Paseo","Palermo","Casares 2966. 7.000 m²."],["Jardín Botánico","Paseo","Palermo","Av. Santa Fe 3951."]]},
+ "15":{m2:"~2,8",parques:2,plazas:8,insight:"La C15 cuenta con 2 parques y 8 plazas. El Parque Los Andes y el Parque Elcano (3 ha) son los principales espacios verdes de la comuna.",items:[["Parque Los Andes","Parque","Chacarita","Av. Dorrego y Av. Guzmán. Punto Verde."],["Parque Elcano","Parque","Chacarita","3 ha sobre Chacarita. 161 árboles nuevos."],["Plaza Benito Nazar","Plaza","Villa Crespo","Antezana y Olaya. Punto Verde."],["Plaza Nobel","Plaza","Villa Crespo","Bucarest y Hamburgo."],["Plaza 24 de Septiembre","Plaza","Villa Crespo","Av. San Martín y Antezana."],["Plaza Dorrego","Plaza","Chacarita","Frente al cementerio."],["Parque Chas","Paseo","Parque Chas","Trazado urbano circular único."],["Cementerio de la Chacarita","Paseo","Chacarita","65 ha. Segundo espacio verde accesible de CABA."]]}
+};
+const PROB_CENSO = {
+ "1":[{t:"w",tit:"Mayor tasa de alquiler de CABA",txt:"La C1 tiene la proporción más alta de hogares inquilinos de la ciudad: 48,3%, muy por encima del promedio de CABA (36,8%)."},{t:"d",tit:"Solo cobertura pública de salud",txt:"Con el 27,9% de su población sin obra social ni prepaga, la C1 registra la tercera tasa más alta de CABA, detrás de la C8 (41,6%) y la C4 (28,5%)."},{t:"i",tit:"Estructura etaria más joven de CABA",txt:"Con una edad mediana de 36 años, la C1 tiene la estructura etaria más joven de la ciudad. El 15,5% de la población tiene menos de 15 años y solo el 14,0% tiene 65 o más."},{t:"w",tit:"Baja proporción de propietarios",txt:"Solo el 41,3% de los hogares son propietarios —la tasa más baja de CABA—. De esos, el 15,5% no tiene ningún tipo de documentación."}],
+ "2":[{t:"w",tit:"Envejecimiento marcado",txt:"El 20,3% de la población tiene 65 o más años, la segunda proporción más alta de CABA. La edad mediana es de 38,6 años, con alta prevalencia de hogares unipersonales."},{t:"g",tit:"Mayor cobertura de salud de CABA",txt:"Solo el 7,7% de la población cuenta únicamente con cobertura pública — el indicador más bajo de toda la ciudad, menos de la mitad que el promedio de CABA (16,3%)."},{t:"i",tit:"Menor densidad de ocupación de viviendas",txt:"Con 1,49 personas por vivienda, Recoleta registra el índice más bajo de CABA, reflejo de la alta proporción de hogares unipersonales."},{t:"g",tit:"Menor porcentaje sin escolaridad registrada",txt:"Solo el 2,3% de la población nunca asistió a la escuela — el registro más bajo de CABA y por debajo del promedio de la ciudad (3,1%)."}],
+ "3":[{t:"i",tit:"La comuna más densa de CABA",txt:"Con 30.662 habitantes por km², la C3 es la más densa de toda la ciudad. Sus 6,4 km² concentran 193.537 personas."},{t:"w",tit:"Alta tasa de alquiler",txt:"El 47,9% de los hogares vive en viviendas alquiladas — la segunda proporción más alta de CABA, detrás de la C1 (48,3%)."},{t:"d",tit:"Solo cobertura pública de salud",txt:"El 20,1% de la población no cuenta con obra social ni prepaga, por encima del promedio de CABA (16,3%)."},{t:"w",tit:"Baja proporción de propietarios",txt:"Solo el 41,6% de los hogares son propietarios, la segunda tasa más baja de CABA después de la C1 (41,3%)."}],
+ "4":[{t:"d",tit:"Solo cobertura pública de salud",txt:"Con el 28,5% de su población sin obra social ni prepaga, la C4 registra la segunda tasa más alta de CABA, solo detrás de la C8 (41,6%)."},{t:"d",tit:"Alto índice de personas por vivienda",txt:"Con 2,25 personas por vivienda, la C4 se ubica entre las tres comunas con el índice más alto de la ciudad, junto a la C7 (2,14) y la C8 (2,79)."},{t:"w",tit:"Estructura etaria joven",txt:"La edad mediana es de 36 años y el 18,7% de la población tiene menos de 15 años — una de las proporciones más altas de CABA."},{t:"w",tit:"Desempleo por encima del promedio",txt:"La tasa de desocupación es del 9,0% del PEA, por encima del promedio de CABA (7,5%)."}],
+ "5":[{t:"g",tit:"Alta formalidad en la propiedad",txt:"Solo el 0,8% de las viviendas propias carece de alg&#250;n tipo de documentaci&#243;n — una de las tasas m&#225;s bajas de CABA. El 94,5% de los propietarios cuenta con alguna documentaci&#243;n."},{t:"i",tit:"Una de las comunas más densas de CABA",txt:"Con 28.995 habitantes por km² en solo 6,7 km², la C5 es la tercera comuna más densa de la ciudad, detrás de la C3 (30.662) y la C6 (29.426)."},{t:"w",tit:"Envejecimiento moderado",txt:"La edad mediana es de 40,3 años y el 18,0% de la población tiene 65 o más, ligeramente por encima del promedio de CABA (17,3%)."},{t:"w",tit:"Alta tasa de alquiler",txt:"El 41,3% de los hogares vive en viviendas alquiladas, por encima del promedio de CABA (36,8%)."}],
+ "6":[{t:"i",tit:"Segunda comuna más densa de CABA",txt:"Con 29.426 habitantes por km² en solo 6,9 km², Caballito es la segunda comuna más densa de la ciudad, detrás de la C3 (30.662)."},{t:"g",tit:"Menor tasa sin documentaci&#243;n de propiedad",txt:"Solo el 0,7% de las viviendas propias no cuenta con ning&#250;n tipo de documentaci&#243;n — el registro m&#225;s bajo de toda CABA."},{t:"g",tit:"Baja tasa de solo cobertura pública",txt:"El 8,0% de la población no tiene obra social ni prepaga, la segunda tasa más baja de CABA detrás de la C2 (7,7%)."},{t:"w",tit:"Envejecimiento marcado",txt:"La edad mediana es de 41,9 años y el 19,8% de la población tiene 65 o más — la tercera proporción más alta de CABA."}],
+ "7":[{t:"d",tit:"Alto índice de personas por vivienda",txt:"Con 2,14 personas por vivienda, la C7 tiene el tercer índice más alto de CABA, detrás de la C8 (2,79) y la C4 (2,25)."},{t:"w",tit:"Solo cobertura pública de salud",txt:"El 17,5% de la población no cuenta con obra social ni prepaga, por encima del promedio de CABA (16,3%)."},{t:"i",tit:"Flores, uno de los barrios más poblados de CABA",txt:"Con 151.440 habitantes, Flores es el barrio más poblado de la ciudad entre aquellos que integran una comuna junto a otros barrios."},{t:"w",tit:"Desempleo por encima del promedio",txt:"La tasa de desocupación es del 7,9% del PEA, por encima del promedio de CABA (7,5%)."}],
+ "8":[{t:"d",tit:"Mayor índice de personas por vivienda",txt:"Con 2,79 personas por vivienda, la C8 registra el índice más alto de toda CABA, por encima de la C4 (2,25) y la C7 (2,14)."},{t:"d",tit:"Mayor tasa de solo cobertura pública de salud",txt:"El 41,6% de la población no cuenta con obra social ni prepaga — el registro más alto de CABA, más del doble que el promedio de la ciudad (16,3%)."},{t:"d",tit:"Mayor proporci&#243;n sin documentaci&#243;n de propiedad",txt:"El 21,2% de las viviendas propias no cuenta con ning&#250;n tipo de documentaci&#243;n — el registro m&#225;s alto de toda CABA."},{t:"i",tit:"Estructura etaria más joven de CABA",txt:"Con una edad mediana de 32,4 años y el 22,3% de la población menor de 15 años, la C8 tiene la pirámide etaria más joven de la ciudad."}],
+ "9":[{t:"d",tit:"Solo cobertura p&#250;blica de salud",txt:"Con el 22,3% de su poblaci&#243;n sin obra social ni prepaga, la C9 es la tercera comuna con mayor proporci&#243;n de solo cobertura p&#250;blica en la ciudad."},{t:"d",tit:"Alto &#237;ndice de personas por vivienda",txt:"Con 2,23 personas por vivienda, la C9 tiene el cuarto &#237;ndice m&#225;s alto de CABA."},{t:"d",tit:"Mayor tasa de inactividad de CABA",txt:"El 35,3% de la poblaci&#243;n de 14 a&#241;os o m&#225;s no participa del mercado laboral — la proporci&#243;n m&#225;s alta de toda la ciudad, frente al promedio de CABA (32,0%)."},{t:"g",tit:"Alta proporci&#243;n de propietarios",txt:"El 58,5% de los hogares son propietarios de su vivienda, por encima del promedio de CABA (52,5%)."}],
+ "10":[{t:"w",tit:"Envejecimiento marcado",txt:"La edad mediana es de 41,6 a&#241;os y el 19,2% de la poblaci&#243;n tiene 65 o m&#225;s — una de las proporciones m&#225;s altas de CABA."},{t:"w",tit:"Alta tasa de inactividad",txt:"El 34,4% de la poblaci&#243;n de 14 o m&#225;s a&#241;os no participa del mercado laboral — la segunda proporci&#243;n m&#225;s alta de CABA, detr&#225;s de la C9 (35,3%)."},{t:"g",tit:"Baja tasa de solo cobertura p&#250;blica de salud",txt:"El 14,7% de la poblaci&#243;n cuenta &#250;nicamente con cobertura p&#250;blica de salud, por debajo del promedio de CABA (16,3%)."},{t:"g",tit:"Predominio de vivienda propia",txt:"El 58,6% de los hogares son propietarios —por encima del promedio de CABA (52,5%)— y solo el 30,9% alquila, uno de los valores m&#225;s bajos de la ciudad."}],
+ "11":[{t:"i",tit:"Edad mediana m&#225;s alta de CABA",txt:"Con 42,3 a&#241;os, la C11 tiene la edad mediana m&#225;s alta de toda la ciudad. El 19,5% de la poblaci&#243;n tiene 65 o m&#225;s a&#241;os, la cuarta proporci&#243;n m&#225;s alta de CABA."},{t:"g",tit:"Baja tasa de solo cobertura p&#250;blica de salud",txt:"El 10,5% de la poblaci&#243;n cuenta &#250;nicamente con cobertura p&#250;blica — por debajo del promedio de CABA (16,3%)."},{t:"g",tit:"Predominio de vivienda propia",txt:"El 60,5% de los hogares son propietarios y solo el 29,2% alquila — la segunda tasa de alquiler m&#225;s baja de CABA, tras la C8 (25,7%)."},{t:"w",tit:"Envejecimiento y baja natalidad",txt:"Con el 14,2% de menores de 15 a&#241;os, la C11 tiene una de las bases etarias m&#225;s reducidas de CABA, consistente con su perfil de envejecimiento avanzado."}],
+ "12":[{t:"g",tit:"Baja tasa de solo cobertura p&#250;blica de salud",txt:"El 8,6% de la poblaci&#243;n cuenta &#250;nicamente con cobertura p&#250;blica — por debajo del promedio de CABA (16,3%)."},{t:"g",tit:"Bajo desempleo",txt:"La tasa de desocupaci&#243;n es del 6,8% del PEA — por debajo del promedio de CABA (7,5%), junto con la C15."},{t:"i",tit:"Villa Urquiza, uno de los barrios m&#225;s poblados",txt:"Con 114.293 habitantes, Villa Urquiza es uno de los barrios m&#225;s poblados de CABA entre los que integran una comuna con otros barrios."},{t:"w",tit:"Envejecimiento moderado",txt:"El 18,0% de la poblaci&#243;n tiene 65 o m&#225;s a&#241;os y la edad mediana es de 40,7 a&#241;os, por encima del promedio de CABA (39,3)."}],
+ "13":[{t:"g",tit:"Menor tasa de solo cobertura p&#250;blica de CABA",txt:"Con el 6,1% de su poblaci&#243;n con cobertura p&#250;blica &#250;nicamente, la C13 registra el indicador m&#225;s bajo de toda la ciudad."},{t:"g",tit:"Menor porcentaje sin escolaridad registrada",txt:"Solo el 2,2% de la poblaci&#243;n nunca asisti&#243; a la escuela — el registro m&#225;s bajo de toda CABA."},{t:"g",tit:"Menor desempleo de CABA",txt:"La tasa de desocupaci&#243;n es del 6,0% del PEA — la m&#225;s baja de toda la ciudad, junto con la C14."},{t:"w",tit:"Envejecimiento avanzado",txt:"El 20,2% de la poblaci&#243;n tiene 65 o m&#225;s a&#241;os — la segunda proporci&#243;n m&#225;s alta de CABA, detr&#225;s de la C2 (20,3%). La edad mediana es de 42 a&#241;os."}],
+ "14":[{t:"g",tit:"Segunda tasa de empleo m&#225;s alta de CABA",txt:"Con el 65,1% de su poblaci&#243;n de 14+ a&#241;os ocupada, la C14 registra la segunda tasa de empleo m&#225;s alta de CABA, detr&#225;s de la C15 (66,0%)."},{t:"g",tit:"Segunda tasa m&#225;s baja de solo cobertura p&#250;blica",txt:"El 7,4% de la poblaci&#243;n cuenta &#250;nicamente con cobertura p&#250;blica — la segunda proporci&#243;n m&#225;s baja de CABA, detr&#225;s de la C13 (6,1%)."},{t:"i",tit:"Segundo &#237;ndice de feminidad m&#225;s alto",txt:"Con 123,5 mujeres por cada 100 hombres, la C14 tiene el segundo &#237;ndice de feminidad m&#225;s alto de CABA, detr&#225;s de la C2 (128,4)."},{t:"w",tit:"Alta tasa de alquiler",txt:"El 40,4% de los hogares vive en viviendas alquiladas, por encima del promedio de CABA (36,8%)."}],
+ "15":[{t:"g",tit:"Mayor tasa de actividad de CABA",txt:"Con el 70,8% de su poblaci&#243;n de 14+ a&#241;os econ&#243;micamente activa y solo el 29,2% inactiva, la C15 registra el mayor nivel de actividad laboral de toda la ciudad."},{t:"g",tit:"Mayor tasa de empleo de CABA",txt:"El 66,0% de la poblaci&#243;n de 14+ a&#241;os est&#225; ocupada — la proporci&#243;n m&#225;s alta de CABA."},{t:"i",tit:"Villa Crespo, el barrio m&#225;s poblado de la comuna",txt:"Con 87.877 habitantes, Villa Crespo concentra el 45% de la poblaci&#243;n de la C15 y es uno de los barrios m&#225;s poblados entre los que integran una comuna compartida."},{t:"g",tit:"Bajo porcentaje sin escolaridad registrada",txt:"El 2,6% de la poblaci&#243;n nunca asisti&#243; a la escuela — una de las proporciones m&#225;s bajas de CABA, junto con la C12 (2,6%) y solo por encima de la C13 (2,2%)."}]
+};
+const MACRO_POB = {"1": {"y2024": 250726, "y2026": 250968}, "2": {"y2024": 152120, "y2026": 150090}, "3": {"y2024": 186899, "y2026": 183502}, "4": {"y2024": 241612, "y2026": 239104}, "5": {"y2024": 186746, "y2026": 184253}, "6": {"y2024": 183451, "y2026": 180838}, "7": {"y2024": 247829, "y2026": 245736}, "8": {"y2024": 233925, "y2026": 235021}, "9": {"y2024": 164856, "y2026": 161880}, "10": {"y2024": 167300, "y2026": 164551}, "11": {"y2024": 193048, "y2026": 190761}, "12": {"y2024": 218090, "y2026": 215910}, "13": {"y2024": 243173, "y2026": 240823}, "14": {"y2024": 235077, "y2026": 235463}, "15": {"y2024": 188883, "y2026": 187091}};
+const MACRO_META = {"yearRef": 2024, "yearLatest": 2026, "total": 3093735, "totalLatest": 3065991};
+
+const ESCOLAR = {
+ "1":{asiste:76383,asiste_pct:34.6,no_asiste:135538,no_asiste_pct:61.3,nunca:9080,nunca_pct:4.1},
+ "2":{asiste:54451,asiste_pct:33.9,no_asiste:102408,no_asiste_pct:63.8,nunca:3750,nunca_pct:2.3},
+ "3":{asiste:64231,asiste_pct:33.2,no_asiste:122237,no_asiste_pct:63.2,nunca:7069,nunca_pct:3.7},
+ "4":{asiste:78737,asiste_pct:34.7,no_asiste:139398,no_asiste_pct:61.4,nunca:8889,nunca_pct:3.9},
+ "5":{asiste:60512,asiste_pct:31.4,no_asiste:126735,no_asiste_pct:65.9,nunca:5202,nunca_pct:2.7},
+ "6":{asiste:61358,asiste_pct:30.4,no_asiste:134719,no_asiste_pct:66.8,nunca:5687,nunca_pct:2.8},
+ "7":{asiste:67804,asiste_pct:31.8,no_asiste:138237,no_asiste_pct:64.8,nunca:7221,nunca_pct:3.4},
+ "8":{asiste:76545,asiste_pct:37.5,no_asiste:117328,no_asiste_pct:57.5,nunca:10015,nunca_pct:4.9},
+ "9":{asiste:52678,asiste_pct:31.4,no_asiste:109464,no_asiste_pct:65.2,nunca:5766,nunca_pct:3.4},
+ "10":{asiste:51766,asiste_pct:30.1,no_asiste:115561,no_asiste_pct:67.2,nunca:4569,nunca_pct:2.7},
+ "11":{asiste:61076,asiste_pct:30.2,no_asiste:135271,no_asiste_pct:67.0,nunca:5558,nunca_pct:2.8},
+ "12":{asiste:70734,asiste_pct:30.1,no_asiste:158436,no_asiste_pct:67.3,nunca:6194,nunca_pct:2.6},
+ "13":{asiste:78527,asiste_pct:29.9,no_asiste:177929,no_asiste_pct:67.8,nunca:5874,nunca_pct:2.2},
+ "14":{asiste:75799,asiste_pct:30.7,no_asiste:165451,no_asiste_pct:66.9,nunca:6002,nunca_pct:2.4},
+ "15":{asiste:60646,asiste_pct:31.1,no_asiste:129633,no_asiste_pct:66.4,nunca:4986,nunca_pct:2.6}
+};
+const SUPERFICIE = {
+ "1":{km2:17.9,densidad:12489.1},
+ "2":{km2:6.3,densidad:25657.9},
+ "3":{km2:6.4,densidad:30662.5},
+ "4":{km2:22.7,densidad:10098.7},
+ "5":{km2:6.7,densidad:28995.7},
+ "6":{km2:6.9,densidad:29426.5},
+ "7":{km2:12.4,densidad:17411.0},
+ "8":{km2:22.5,densidad:9083.0},
+ "9":{km2:16.6,densidad:10184.5},
+ "10":{km2:12.6,densidad:13730.5},
+ "11":{km2:14.1,densidad:14510.7},
+ "12":{km2:15.7,densidad:15088.3},
+ "13":{km2:15.0,densidad:17625.7},
+ "14":{km2:15.9,densidad:15637.4},
+ "15":{km2:14.3,densidad:13767.6}
+};
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-content').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('tab-'+id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function fN(n){return Number(n).toLocaleString('es-AR');}
+function p1(v){return Number(v).toFixed(1).replace('.',',')+'%';}
+function col(v,ok,warn){return v<=ok?'ok':v<=warn?'warn':'bad';}
+function popFor(id){
+  const p = MACRO_POB[id]; return p ? p.y2024 : DATA[id].pob;
+}
+
+function renderCenso(id, d) {
+  var e=ESCOLAR[id];
+  var pvC=col(d.pers_viv,1.92,2.2), ssC=col(d.sin_salud_pct,16.3,28),
+      dC=col(d.desoc_pct,7.5,9.5), neC=col(d.nunca_escuela_pct,3.1,4.5);
+  var pobProj = popFor(id);
+  var barH='';
+  var bkeys=Object.keys(d.barrios);
+  for(var i=0;i<bkeys.length;i++){
+    var b=bkeys[i], bp=d.barrios[b];
+    barH+='<div class="br"><div class="bl">'+b+'</div><div class="bt"><div class="bf" style="width:'+Math.round(bp/d.pob*100)+'%;background:'+d.color+'"></div></div><div class="bv">'+fN(bp)+'</div></div>';
+  }
+  var cp='';
+  var pc=PROB_CENSO[id];
+  for(var i=0;i<pc.length;i++){
+    cp+='<div class="alert '+pc[i].t+'"><div class="at">'+pc[i].tit+'</div><div class="ab">'+pc[i].txt+'</div></div>';
+  }
+  return '<div class="kpi-grid">'
+    +'<div class="kpi"><div class="kl">Población · Censo 2022</div><div class="kv">'+fN(d.pob)+'</div><div class="ks">'+p1(d.pob/3095454*100)+' de CABA</div></div>'
+    +'<div class="kpi"><div class="kl">Viviendas particulares</div><div class="kv">'+fN(d.viv)+'</div><div class="ks">'+p1(d.viv/1614354*100)+' de CABA</div></div>'
+    +'<div class="kpi '+pvC+'"><div class="kl">Personas / vivienda</div><div class="kv '+pvC+'">'+d.pers_viv.toFixed(2).replace('.',',')+'</div><div class="ks">CABA promedio: 1,92</div></div>'
+    +'<div class="kpi"><div class="kl">Edad mediana</div><div class="kv">'+d.edad_mediana.toString().replace('.',',')+'</div><div class="ks">CABA: 39,3 a&#241;os</div></div>'
+    +'<div class="kpi '+ssC+'"><div class="kl">Solo cobertura p&#250;blica de salud</div><div class="kv '+ssC+'">'+p1(d.sin_salud_pct)+'</div><div class="ks">CABA: 16,3%</div></div>'
+    +'<div class="kpi '+dC+'"><div class="kl">Tasa de desempleo</div><div class="kv '+dC+'">'+p1(d.desoc_pct)+'</div><div class="ks">del PEA · CABA 7,5%</div></div>'
+    +'<div class="kpi '+neC+'"><div class="kl">Sin escolaridad registrada</div><div class="kv '+neC+'">'+p1(d.nunca_escuela_pct)+'</div><div class="ks">CABA: 3,1%</div></div>'
+    +'<div class="kpi"><div class="kl">Hogares en viviendas alquiladas</div><div class="kv">'+p1(d.alquila_pct)+'</div><div class="ks">CABA: 36,8%</div></div>'
+    +'</div>'
+
+    +'<div class="sec">Estructura por edad</div>'
+    +'<div class="chart-box"><div class="ct">Distribución por grupo quinquenal (%) · Comuna '+id+' vs CABA</div>'
+    +'<div class="pyr-wrap"><div class="pyr-container" id="pyr'+id+'"></div><div class="pyr-tooltip" id="tip'+id+'"></div></div>'
+    +'<div class="legend-row" style="margin-top:14px"><span><span class="leg-dot" style="background:'+d.color+'"></span>Comuna '+id+'</span><span><span class="leg-dot" style="background:#B5D4F4"></span>CABA promedio</span></div>'
+    +'<div class="note">Cuadro 3 · Censo 2022 INDEC · Posicioná el cursor sobre cada barra</div></div>'
+
+    +'<div class="sec">Sexo registrado al nacer</div>'
+    +'<div class="chart-box"><div class="ct">Población en viviendas particulares según sexo</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">'
+    +'<div class="kpi"><div class="kl">Femenino</div><div class="kv info">'+fN(d.fem)+'</div><div class="ks">'+p1(d.fem/d.pob*100)+'</div></div>'
+    +'<div class="kpi"><div class="kl">Masculino</div><div class="kv">'+fN(d.masc)+'</div><div class="ks">'+p1(d.masc/d.pob*100)+'</div></div>'
+    +'<div class="kpi"><div class="kl">Índice de feminidad</div><div class="kv">'+(d.fem/d.masc*100).toFixed(1).replace('.',',')+'</div><div class="ks">CABA: 116,6</div></div>'
+    +'</div>'
+    +'<div class="br"><div class="bl">Femenino</div>'
+    +'<div class="bt" style="height:22px">'
+    +'<div style="height:100%;width:'+p1(d.fem/d.pob*100)+';background:#1B6EC2;border-radius:3px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#fff">'+p1(d.fem/d.pob*100)+'</div>'
+    +'</div></div>'
+    +'<div class="br"><div class="bl">Masculino</div>'
+    +'<div class="bt" style="height:22px">'
+    +'<div style="height:100%;width:'+p1(d.masc/d.pob*100)+';background:#6AADE4;border-radius:3px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#fff">'+p1(d.masc/d.pob*100)+'</div>'
+    +'</div></div>'
+    +'<div class="sep"></div>'
+    +'<div class="br"><div class="bl" style="color:#9CA3AF">CABA Femenino</div><div class="bt"><div class="bf" style="width:53.8%;background:#B5D4F4"></div></div><div class="bv" style="color:#6B7280">53,8%</div></div>'
+    +'<div class="br"><div class="bl" style="color:#9CA3AF">CABA Masculino</div><div class="bt"><div class="bf" style="width:46.2%;background:#B5D4F4"></div></div><div class="bv" style="color:#6B7280">46,2%</div></div>'
+    +'<div class="note">Cuadro 2 · Censo 2022 INDEC</div></div>'
+
+    +'<div class="sec">Asistencia escolar</div>'
+    +'<div class="chart-box"><div class="ct">Condici&#243;n de asistencia escolar · Total poblaci&#243;n en viviendas particulares ('+fN(d.pob)+')</div>'
+    +'<div class="br"><div class="bl">Asiste actualmente</div><div class="bt"><div class="bf" style="width:'+e.asiste_pct+'%;background:#0A8A5A"></div></div><div class="bv">'+p1(e.asiste_pct)+'</div></div>'
+    +'<div class="br"><div class="bl">No asiste pero asisti&#243;</div><div class="bt"><div class="bf" style="width:'+e.no_asiste_pct+'%;background:#1B6EC2"></div></div><div class="bv">'+p1(e.no_asiste_pct)+'</div></div>'
+    +'<div class="br"><div class="bl">Sin escolaridad registrada</div><div class="bt"><div class="bf" style="width:'+Math.min(e.nunca_pct*10,100)+'%;background:#C0392B"></div></div><div class="bv">'+p1(e.nunca_pct)+'</div></div>'
+    +'<div class="sep"></div>'
+    +'<div class="br"><div class="bl" style="color:#9CA3AF">CABA asiste</div><div class="bt"><div class="bf" style="width:32%;background:#B5D4F4"></div></div><div class="bv" style="color:#6B7280">32,0%</div></div>'
+    +'<div class="br"><div class="bl" style="color:#9CA3AF">CABA no asiste / asisti&#243;</div><div class="bt"><div class="bf" style="width:64.9%;background:#B5D4F4"></div></div><div class="bv" style="color:#6B7280">64,9%</div></div>'
+    +'<div class="br"><div class="bl" style="color:#9CA3AF">CABA sin escolaridad reg.</div><div class="bt"><div class="bf" style="width:31%;background:#B5D4F4"></div></div><div class="bv" style="color:#6B7280">3,1%</div></div>'
+    +'<div class="note">Cuadro 17 · Censo 2022 INDEC</div></div>'
+
+    +'<div class="sec">Salud y cobertura</div>'
+    +'<div class="chart-box"><div class="ct">Cobertura de salud · Total poblaci&#243;n en viviendas particulares ('+fN(d.pob)+')</div>'
+    +'<div class="br"><div class="bl">Obra social / prepaga</div><div class="bt"><div class="bf" style="width:'+d.obra_pct+'%;background:#0A8A5A"></div></div><div class="bv">'+p1(d.obra_pct)+'</div></div>'
+    +'<div class="br"><div class="bl">Plan / prog. estatal</div><div class="bt"><div class="bf" style="width:'+Math.min(d.plan_pct*10,100)+'%;background:#C06A00"></div></div><div class="bv">'+p1(d.plan_pct)+'</div></div>'
+    +'<div class="br"><div class="bl">Solo cobertura p&#250;blica</div><div class="bt"><div class="bf" style="width:'+Math.min(d.sin_salud_pct*2,100)+'%;background:#C0392B"></div></div><div class="bv">'+p1(d.sin_salud_pct)+'</div></div>'
+    +'<div class="sep"></div>'
+    +'<div class="br"><div class="bl" style="color:#9CA3AF">CABA solo cob. p&#250;blica</div><div class="bt"><div class="bf" style="width:32.6%;background:#B5D4F4"></div></div><div class="bv" style="color:#6B7280">16,3%</div></div>'
+    +'<div class="note">Cuadro 15 · Censo 2022 INDEC</div></div>'
+
+    +'<div class="sec">Vivienda y tenencia</div>'
+    +'<div class="chart-box"><div class="ct">Régimen de tenencia (total hogares: '+fN(d.hogares)+')</div>'
+    +'<div class="br"><div class="bl">Propia (total)</div><div class="bt"><div class="bf" style="width:'+d.propia_pct+'%;background:#0A8A5A"></div></div><div class="bv">'+p1(d.propia_pct)+'</div></div>'
+    +'<div class="br-sub-group">'
+    +'<div class="br"><div class="bl">· con escritura</div><div class="bt"><div class="bf" style="width:'+(d.propia_pct*d.escritura_pct/100).toFixed(1)+'%;background:#5DCAA5"></div></div><div class="bv">'+p1(d.propia_pct*d.escritura_pct/100)+'</div></div>'
+    +'<div class="br"><div class="bl">· boleto compraventa</div><div class="bt"><div class="bf" style="width:'+Math.max((d.propia_pct*d.boleto_pct/100)*2,0.5)+'%;background:#C06A00"></div></div><div class="bv">'+p1(d.propia_pct*d.boleto_pct/100)+'</div></div>'
+    +'<div class="br"><div class="bl">· otra documentaci&#243;n</div><div class="bt"><div class="bf" style="width:'+Math.max((d.propia_pct*d.otra_doc_pct/100)*2,0.5)+'%;background:#E8A838"></div></div><div class="bv">'+p1(d.propia_pct*d.otra_doc_pct/100)+'</div></div>'
+    +'<div class="br"><div class="bl">· sin documentaci&#243;n</div><div class="bt"><div class="bf" style="width:'+Math.max((d.propia_pct*d.sin_doc_pct/100)*4,0.5)+'%;background:#C0392B"></div></div><div class="bv">'+p1(d.propia_pct*d.sin_doc_pct/100)+'</div></div>'
+    +'</div>'
+    +'<div class="br"><div class="bl">Alquilada</div><div class="bt"><div class="bf" style="width:'+d.alquila_pct+'%;background:#1B6EC2"></div></div><div class="bv">'+p1(d.alquila_pct)+'</div></div>'
+    +'<div class="br"><div class="bl">Prestada</div><div class="bt"><div class="bf" style="width:'+d.prestada_pct*5+'%;background:#6AADE4"></div></div><div class="bv">'+p1(d.prestada_pct)+'</div></div>'
+    +'<div class="sep"></div>'
+    +'<div class="br"><div class="bl" style="color:#9CA3AF">CABA propia</div><div class="bt"><div class="bf" style="width:52.5%;background:#B5D4F4"></div></div><div class="bv" style="color:#6B7280">52,5%</div></div>'
+    +'<div class="br"><div class="bl" style="color:#9CA3AF">CABA alquilada</div><div class="bt"><div class="bf" style="width:36.8%;background:#B5D4F4"></div></div><div class="bv" style="color:#6B7280">36,8%</div></div>'
+    +'<div class="note">Cuadro 13 · Censo 2022 INDEC</div></div>'
+
+    +'<div class="sec">Mercado laboral</div>'
+    +'<div class="chart-box"><div class="ct">Condición de actividad económica (pob. 14+: '+fN(d.pob14)+')</div>'
+    +'<div class="br"><div class="bl">PEA (activa)</div><div class="bt"><div class="bf" style="width:'+d.pea_pct+'%;background:#1B6EC2"></div></div><div class="bv">'+p1(d.pea_pct)+'</div></div>'
+    +'<div class="br"><div class="bl">↳ Ocupada</div><div class="bt"><div class="bf" style="width:'+d.tasa_empleo+'%;background:#0A8A5A"></div></div><div class="bv">'+p1(d.tasa_empleo)+'</div></div>'
+    +'<div class="br"><div class="bl">↳ Desocupada</div><div class="bt"><div class="bf" style="width:'+Math.max(d.desoc_pct*4,1)+'%;background:#C0392B"></div></div><div class="bv">'+p1(d.desoc_pct)+'</div></div>'
+    +'<div class="br"><div class="bl">No activa</div><div class="bt"><div class="bf" style="width:'+d.inact_pct+'%;background:#9CA3AF"></div></div><div class="bv">'+p1(d.inact_pct)+'</div></div>'
+    +'<div class="sep"></div>'
+    +'<div class="br"><div class="bl" style="color:#9CA3AF">CABA PEA activa</div><div class="bt"><div class="bf" style="width:68.0%;background:#B5D4F4"></div></div><div class="bv" style="color:#6B7280">68,0%</div></div>'
+    +'<div class="br"><div class="bl" style="color:#9CA3AF">CABA ocupada</div><div class="bt"><div class="bf" style="width:62.9%;background:#B5D4F4"></div></div><div class="bv" style="color:#6B7280">62,9%</div></div>'
+    +'<div class="br"><div class="bl" style="color:#9CA3AF">CABA desocupada</div><div class="bt"><div class="bf" style="width:30.0%;background:#B5D4F4"></div></div><div class="bv" style="color:#6B7280">7,5%</div></div>'
+    +'<div class="br"><div class="bl" style="color:#9CA3AF">CABA no activa</div><div class="bt"><div class="bf" style="width:32.0%;background:#B5D4F4"></div></div><div class="bv" style="color:#6B7280">32,0%</div></div>'
+    +'<div class="note">Cuadro 19 · Censo 2022 INDEC</div></div>'
+
+    +'<div class="sec">Población por barrio</div>'
+    +'<div class="chart-box"><div class="ct">Poblaci&#243;n por barrio · Total poblaci&#243;n en viviendas particulares ('+fN(d.pob)+')</div>'
+    +barH
+    +'<div class="note">Cuadro 1 · Censo 2022 INDEC</div></div>'
+
+    +'<div class="sec">Datos destacados</div>'
+    +'<div class="grid2">'+cp+'</div>'
+
+    +'<div class="src">Fuente: INDEC · Censo Nacional de Población, Hogares y Viviendas 2022 · Publicación "Región Metropolitana Buenos Aires. Viviendas particulares y población en viviendas particulares, por comuna y partido, entidad, localidad y zona rural. Año 2022" · Cuadros 1, 2, 3, 13, 15, 17 y 19.</div>';
+}
+
+function renderVerde(id, d) {
+  var s=SUPERFICIE[id];
+  var g=GREEN[id];
+  var m2num=parseFloat(g.m2.replace('~','').replace(',','.'));
+  var pvC=m2num<1?'bad':m2num<3?'warn':'ok';
+  var pkC=g.parques===0?'bad':g.parques<2?'warn':'ok';
+  var rows='';
+  for(var i=0;i<g.items.length;i++){
+    var it=g.items[i];
+    var tc=TYPE_CLASS[it[1]]||'t-plaza';
+    rows+='<tr><td><b>'+it[0]+'</b></td><td><span class="type-badge '+tc+'">'+it[1]+'</span></td><td>'+it[2]+'</td><td style="color:#6B7280;font-size:11px">'+it[3]+'</td></tr>';
+  }
+  return '<div class="kpi3">'
+    +'<div class="kpi"><div class="kl">Superficie</div><div class="kv info">'+s.km2.toString().replace('.',',')+'</div><div class="ks">km&#178; · Cuadro 2.1 · Censo 2022</div></div>'
+    +'<div class="kpi"><div class="kl">Densidad</div><div class="kv">'+fN(Math.round(s.densidad))+'</div><div class="ks">hab/km&#178; · Cuadro 2.1 · Censo 2022</div></div>'
+    +'<div class="kpi"><div class="kl">Plazas y plazoletas</div><div class="kv">'+g.plazas+'</div><div class="ks">M&#225;s paseos y veredones</div></div>'
+    +'</div>'
+    +'<div class="insight-box'+(m2num<1?' red':'')+'"><div class="ib-title">Perfil verde de la comuna</div><div class="ib-text">'+g.insight+'</div></div>'
+    +'<div class="sec">Espacios verdes principales</div>'
+    +'<div class="chart-box"><div class="tbl-wrap"><table class="ev-table"><thead><tr><th>Nombre</th><th>Tipo</th><th>Barrio</th><th>Referencia</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>'
+    +'<div class="src">Fuente: GCBA · Buenos Aires Data — Espacios Verdes Públicos.</div>';
+}
+
+function buildPyr(id) {
+  var d=DATA[id];
+  var container=document.getElementById('pyr'+id);
+  var tooltip=document.getElementById('tip'+id);
+  if(!container||container.dataset.built) return;
+  container.dataset.built='1';
+  var H=104, maxV=0;
+  for(var i=0;i<d.age_pct.length;i++){
+    if(d.age_pct[i]>maxV) maxV=d.age_pct[i];
+    if(CABA_AGE[i]>maxV) maxV=CABA_AGE[i];
+  }
+  var pobProj = popFor(id);
+  var cabaTotal = MACRO_META.total;
+  for(var i=0;i<d.age_pct.length;i++){
+    (function(i){
+      var v=d.age_pct[i];
+      var cabaH=Math.round(CABA_AGE[i]/maxV*H);
+      var mainH=Math.round(v/maxV*H);
+      var wrapH=Math.max(cabaH,mainH);
+      var col=document.createElement('div');
+      col.className='pyr-col';
+      var bd=document.createElement('div');
+      bd.className='pyr-bars'; bd.style.height=H+'px';
+      var wr=document.createElement('div');
+      wr.className='pyr-bar-wrap'; wr.style.height=wrapH+'px';
+      var cb=document.createElement('div');
+      cb.className='pyr-caba'; cb.style.height=cabaH+'px'; cb.style.background='#B5D4F4';
+      var mb=document.createElement('div');
+      mb.className='pyr-main'; mb.style.height=mainH+'px'; mb.style.background=d.color;
+      wr.appendChild(cb); wr.appendChild(mb); bd.appendChild(wr);
+      var lb=document.createElement('div');
+      lb.className='pyr-lbl'; lb.textContent=i%3===0?AGE_LBL[i]:'';
+      col.appendChild(bd); col.appendChild(lb);
+      var comPob=Math.round(pobProj*v/100);
+      var cabaPob=Math.round(cabaTotal*CABA_AGE[i]/100);
+      col.onmouseenter=function(e){
+        tooltip.innerHTML='<strong>'+AGE_LBL[i]+' años</strong><br>C'+id+': '+p1(v)+' · '+fN(comPob)+' pers.<br>CABA: '+p1(CABA_AGE[i])+' · '+fN(cabaPob)+' pers.';
+        tooltip.className='pyr-tooltip visible';
+        posTip(e,tooltip,container);
+      };
+      col.onmousemove=function(e){posTip(e,tooltip,container);};
+      col.onmouseleave=function(){tooltip.className='pyr-tooltip';};
+      container.appendChild(col);
+    })(i);
+  }
+}
+
+function posTip(e,tip,cont){
+  var r=cont.getBoundingClientRect();
+  tip.style.left=Math.min(e.clientX-r.left+10,cont.offsetWidth-160)+'px';
+  tip.style.top=Math.max(e.clientY-r.top-66,0)+'px';
+}
+
+function mostrarComuna(id){
+  var btns=document.querySelectorAll('.cs-btn');
+  for(var i=0;i<btns.length;i++){
+    btns[i].classList.remove('active');
+    btns[i].style.background=''; btns[i].style.color=''; btns[i].style.borderColor='';
+  }
+  var ab=document.getElementById('btn-c'+id);
+  if(ab){ab.classList.add('active');ab.style.background=DATA[id].color;ab.style.color='#fff';ab.style.borderColor=DATA[id].color;}
+  var panels=document.querySelectorAll('.panel');
+  for(var i=0;i<panels.length;i++) panels[i].classList.remove('active');
+  var panel=document.getElementById('panel-c'+id);
+  if(panel) panel.classList.add('active');
+  buildPyr(id);
+}
+
+(function(){
+  var cs=document.getElementById('cs');
+  var panelsEl=document.getElementById('panels');
+  var ids=Object.keys(DATA);
+  for(var i=0;i<ids.length;i++){
+    var id=ids[i];
+    var d=DATA[id];
+    var btn=document.createElement('button');
+    btn.id='btn-c'+id;
+    btn.className='cs-btn'+(i===0?' active':'');
+    btn.textContent='Comuna '+id;
+    btn.setAttribute('data-id',id);
+    if(i===0){btn.style.background=d.color;btn.style.color='#fff';btn.style.borderColor=d.color;}
+    btn.onclick=function(){mostrarComuna(this.getAttribute('data-id'));};
+    cs.appendChild(btn);
+    var panel=document.createElement('div');
+    panel.id='panel-c'+id;
+    panel.className='panel'+(i===0?' active':'');
+    var bio=BIO[id]||d.desc;
+    panel.innerHTML=
+      '<div class="commune-header">'
+      +'<div class="badge" style="background:'+d.bg+';color:'+d.color+'">C'+id+'</div>'
+      +'<div><div class="commune-name">'+d.desc+'</div><div class="commune-desc">'+bio+'</div></div>'
+      +'</div>'
+      +renderCenso(id,d)
+      +'<hr class="section-divider">'
+      +'<div class="sec" style="margin-top:0">Espacios verdes y territorio</div>'
+      +renderVerde(id,d);
+    panelsEl.appendChild(panel);
+  }
+  buildPyr('1');
+})();
+</script>
+</body>
+</html>
